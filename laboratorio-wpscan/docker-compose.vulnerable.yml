@@ -1,0 +1,58 @@
+services:
+  db_vuln:
+    image: mysql:5.7
+    container_name: wpscan-lab-vuln-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress_vuln
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - db_vuln_data:/var/lib/mysql
+    networks:
+      - wpscan_vuln_lab
+
+  wordpress_vuln:
+    image: wordpress:5.8-php7.4-apache
+    container_name: wpscan-lab-vuln-wordpress
+    restart: unless-stopped
+    depends_on:
+      - db_vuln
+    ports:
+      - "8081:80"
+    environment:
+      WORDPRESS_DB_HOST: db_vuln:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress_vuln
+    volumes:
+      - wordpress_vuln_data:/var/www/html
+    networks:
+      - wpscan_vuln_lab
+
+  wpcli_vuln:
+    image: wordpress:cli-php7.4
+    container_name: wpscan-lab-vuln-wpcli
+    depends_on:
+      - db_vuln
+      - wordpress_vuln
+    environment:
+      WORDPRESS_DB_HOST: db_vuln:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress_vuln
+    volumes:
+      - wordpress_vuln_data:/var/www/html
+    networks:
+      - wpscan_vuln_lab
+    profiles:
+      - tools
+
+volumes:
+  db_vuln_data:
+  wordpress_vuln_data:
+
+networks:
+  wpscan_vuln_lab:
+    driver: bridge
