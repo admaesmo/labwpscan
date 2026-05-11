@@ -112,3 +112,16 @@ docker compose down -v
 ## 7. Mensaje para la exposicion
 
 Este laboratorio muestra como un escaner de caja negra observa un WordPress desde fuera. La idea no es "hackear por hackear", sino aprender a identificar informacion expuesta, interpretarla y proponer mitigaciones defensivas.
+
+## 8. Segunda parte vulnerable
+
+Ademas del WordPress actualizado en `http://localhost:8080`, se incluye una segunda parte opcional con un WordPress desactualizado en `http://localhost:8081`.
+
+Para ejecutarla:
+
+```bash
+chmod +x scripts/preparar-wordpress-vulnerable.sh
+./scripts/preparar-wordpress-vulnerable.sh
+```
+
+Esta segunda parte queda definida por `docker-compose.vulnerable.yml` y el script `scripts/preparar-wordpress-vulnerable.sh`.
