@@ -1,0 +1,438 @@
+:root {
+  --bg: #07111f;
+  --surface: #0d1b2d;
+  --surface-2: #12243a;
+  --ink: #eef6ff;
+  --muted: #a9b8c9;
+  --line: #24415f;
+  --blue: #2f6df6;
+  --cyan: #27d3f5;
+  --code: #06101d;
+}
+
+html,
+body {
+  background: var(--bg);
+}
+
+body::before {
+  background:
+    linear-gradient(rgba(39, 211, 245, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(39, 211, 245, 0.05) 1px, transparent 1px);
+  background-size: 38px 38px;
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+}
+
+.reveal {
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  background: rgba(7, 17, 31, 0.82);
+  border: 1px solid rgba(39, 211, 245, 0.16);
+  border-radius: 14px;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.32);
+  padding: 42px;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  color: var(--ink);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.reveal h1 {
+  color: var(--cyan);
+  font-size: 4rem;
+  line-height: 1;
+  margin-bottom: 0.16em;
+}
+
+.reveal h2 {
+  border-bottom: 2px solid rgba(39, 211, 245, 0.32);
+  color: var(--ink);
+  font-size: 2rem;
+  margin-bottom: 0.75em;
+  padding-bottom: 0.28em;
+}
+
+.reveal h3 {
+  color: var(--cyan);
+  font-size: 1.02rem;
+  margin-bottom: 0.45em;
+}
+
+.reveal p,
+.reveal li,
+.reveal td,
+.reveal th {
+  color: var(--ink);
+  font-size: 0.78em;
+  line-height: 1.35;
+}
+
+.reveal li::marker {
+  color: var(--cyan);
+}
+
+.reveal strong {
+  color: var(--cyan);
+}
+
+.reveal a {
+  color: var(--cyan);
+}
+
+.title-slide {
+  min-height: 560px;
+}
+
+.title-slide::after {
+  border: 1px solid rgba(39, 211, 245, 0.35);
+  border-radius: 12px;
+  color: var(--muted);
+  content: "WP / HTTP / CVE / LAB";
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.38em;
+  letter-spacing: 0.1em;
+  margin-top: 70px;
+  padding: 16px 18px;
+  width: max-content;
+}
+
+.title-slide h2 {
+  border: 0;
+  color: var(--ink);
+  font-size: 1.45rem;
+  margin: 0;
+  padding: 0;
+}
+
+.eyebrow {
+  color: var(--cyan) !important;
+  font-size: 0.55em !important;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin-bottom: 1.2em;
+  text-transform: uppercase;
+}
+
+.subtitle,
+.note {
+  color: var(--muted) !important;
+}
+
+.subtitle {
+  margin-top: 2em;
+}
+
+.cover-meta {
+  border-left: 4px solid var(--cyan);
+  margin-top: 34px;
+  padding-left: 18px;
+}
+
+.cover-meta p {
+  color: var(--muted) !important;
+  font-size: 0.6em !important;
+  line-height: 1.2;
+  margin: 0.35em 0;
+}
+
+.cover-meta strong {
+  color: var(--ink);
+}
+
+.lead {
+  color: var(--ink) !important;
+  font-size: 1.05em !important;
+}
+
+.two-col,
+.concept-grid,
+.scenario-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.two-col {
+  margin-top: 26px;
+}
+
+.panel,
+.definition,
+.warning,
+.closing,
+.concept-grid div {
+  background: rgba(18, 36, 58, 0.92);
+  border: 1px solid rgba(39, 211, 245, 0.2);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  padding: 20px;
+}
+
+.panel {
+  min-height: 210px;
+}
+
+.scenario {
+  background: rgba(18, 36, 58, 0.92);
+  border: 1px solid rgba(39, 211, 245, 0.22);
+  border-radius: 10px;
+  min-height: 330px;
+  padding: 22px;
+}
+
+.scenario.hot {
+  border-color: rgba(47, 109, 246, 0.62);
+  box-shadow: inset 0 0 0 1px rgba(47, 109, 246, 0.24);
+}
+
+.scenario-label {
+  color: var(--muted) !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.48em !important;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.scenario code {
+  color: var(--cyan);
+  font-size: 0.72em;
+}
+
+.definition {
+  border-left: 6px solid var(--cyan);
+  font-size: 0.95em;
+  margin-bottom: 24px;
+}
+
+.warning {
+  border-left: 6px solid var(--blue);
+  color: var(--ink);
+  font-size: 0.86em;
+  margin-bottom: 22px;
+}
+
+.warning.small {
+  font-size: 0.62em;
+  margin-top: 18px;
+}
+
+.note {
+  font-size: 0.68em !important;
+}
+
+.attack-surface {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 36px;
+}
+
+.attack-surface span,
+.report-flow div {
+  align-items: center;
+  background: rgba(18, 36, 58, 0.96);
+  border: 1px solid rgba(39, 211, 245, 0.24);
+  border-radius: 10px;
+  color: var(--cyan);
+  display: flex;
+  font-size: 0.66em;
+  font-weight: 800;
+  justify-content: center;
+  min-height: 76px;
+  padding: 10px;
+  text-align: center;
+}
+
+.concept-grid div {
+  border-left: 5px solid var(--cyan);
+}
+
+.diagram {
+  background: rgba(13, 27, 45, 0.88);
+  border: 1px solid rgba(39, 211, 245, 0.2);
+  border-radius: 12px;
+  max-height: 520px;
+  padding: 18px;
+  width: 100%;
+}
+
+.box {
+  stroke: rgba(39, 211, 245, 0.38);
+  stroke-width: 2;
+}
+
+.box-a,
+.box-b,
+.box-c,
+.box-d {
+  fill: #10243b;
+}
+
+.box-b,
+.box-d {
+  fill: #0e2b43;
+}
+
+.box-title {
+  fill: var(--cyan);
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.box-text {
+  fill: var(--muted);
+  font-size: 21px;
+}
+
+.arrow {
+  stroke: var(--cyan);
+  stroke-width: 4;
+  marker-end: url(#arrow);
+}
+
+svg[aria-label="Arquitectura del laboratorio local"] .arrow {
+  marker-end: url(#arrow2);
+}
+
+.report-flow {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 36px 0;
+}
+
+.defense-ring {
+  float: right;
+  height: 300px;
+  margin-left: 28px;
+  position: relative;
+  width: 300px;
+}
+
+.ring {
+  align-items: center;
+  border: 2px solid rgba(39, 211, 245, 0.28);
+  border-radius: 50%;
+  display: flex;
+  font-size: 0.44em;
+  font-weight: 800;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+}
+
+.outer {
+  background: rgba(47, 109, 246, 0.16);
+  color: var(--ink);
+  inset: 0;
+}
+
+.mid {
+  background: rgba(39, 211, 245, 0.16);
+  color: var(--ink);
+  inset: 48px;
+}
+
+.inner {
+  background: rgba(47, 109, 246, 0.24);
+  color: var(--ink);
+  inset: 96px;
+}
+
+.core {
+  background: var(--cyan);
+  color: #04101d;
+  inset: 134px;
+}
+
+.closing {
+  border-left: 6px solid var(--cyan);
+  color: var(--ink);
+  font-weight: 800;
+  margin-top: 28px;
+}
+
+.sources li {
+  color: var(--muted);
+  font-size: 0.62em;
+}
+
+.reveal pre {
+  background: transparent;
+  box-shadow: none;
+  font-size: 0.52em;
+  width: 100%;
+}
+
+.reveal pre code {
+  background: var(--code);
+  border: 1px solid rgba(39, 211, 245, 0.2);
+  border-radius: 10px;
+  max-height: 430px;
+  padding: 18px;
+}
+
+.reveal code {
+  border-radius: 8px;
+}
+
+.reveal table {
+  border-collapse: collapse;
+  font-size: 0.68em;
+}
+
+.reveal table th,
+.reveal table td {
+  border-color: rgba(39, 211, 245, 0.22);
+}
+
+.reveal table th {
+  color: var(--cyan);
+}
+
+.slide-number {
+  color: var(--cyan) !important;
+}
+
+.progress {
+  color: var(--cyan) !important;
+}
+
+.controls {
+  color: var(--cyan) !important;
+}
+
+@media (max-width: 760px) {
+  .reveal .slides section {
+    padding: 28px;
+  }
+
+  .two-col,
+  .concept-grid,
+  .scenario-grid,
+  .attack-surface,
+  .report-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .defense-ring {
+    float: none;
+    margin: 0 auto 20px;
+  }
+}
