@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WPScan: seguridad en WordPress</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section class="title-slide">
+          <p class="eyebrow">Seguridad de la informacion</p>
+          <h1>WPScan</h1>
+          <h2>Analisis de seguridad para WordPress</h2>
+          <p class="subtitle">Contexto, teoria y laboratorio local</p>
+          <div class="cover-meta">
+            <p><strong>Estudiante:</strong> Adrian Espinosa</p>
+            <p><strong>Materia:</strong> Seguridad de la Informacion</p>
+            <p><strong>Facultad:</strong> Facultad de Ingenieria, UdeA</p>
+            <p><strong>Profesor:</strong> Fredy Gutierrez</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Pregunta guia</h2>
+          <p class="lead">Como puede un auditor observar un sitio WordPress desde fuera y convertir esa informacion en acciones defensivas?</p>
+          <div class="two-col">
+            <div class="panel">
+              <h3>Lo que ve el escaner</h3>
+              <ul>
+                <li>Versiones detectables</li>
+                <li>Plugins y temas</li>
+                <li>Usuarios expuestos</li>
+                <li>Archivos sensibles</li>
+              </ul>
+            </div>
+            <div class="panel">
+              <h3>Lo que decide el analista</h3>
+              <ul>
+                <li>Riesgo real</li>
+                <li>Prioridad</li>
+                <li>Mitigacion</li>
+                <li>Evidencia para el informe</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Contexto</h2>
+          <p>WordPress es muy usado porque permite construir sitios rapidamente con plugins y temas. Esa flexibilidad tambien aumenta la superficie de ataque.</p>
+          <div class="attack-surface">
+            <span>Nucleo</span>
+            <span>Plugins</span>
+            <span>Temas</span>
+            <span>Usuarios</span>
+            <span>API REST</span>
+            <span>XML-RPC</span>
+            <span>Backups</span>
+            <span>Logs</span>
+          </div>
+        </section>
+
+        <section>
+          <h2>Que es WPScan</h2>
+          <div class="definition">
+            <strong>WPScan</strong> es un escaner de seguridad de caja negra especializado en WordPress.
+          </div>
+          <ul>
+            <li>Analiza el sitio desde fuera, mediante peticiones HTTP.</li>
+            <li>Busca pistas de WordPress, plugins, temas y usuarios.</li>
+            <li>Relaciona componentes detectados con vulnerabilidades conocidas.</li>
+            <li>Se usa en auditorias autorizadas y revisiones defensivas.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Uso etico</h2>
+          <div class="warning">
+            WPScan debe usarse solo en sistemas propios, laboratorios o activos con autorizacion explicita.
+          </div>
+          <ul>
+            <li>Definir alcance antes del escaneo.</li>
+            <li>No ejecutar fuerza bruta sin permiso especifico.</li>
+            <li>Evitar pruebas agresivas en produccion.</li>
+            <li>Proteger tokens, salidas y reportes.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Teoria base</h2>
+          <div class="concept-grid">
+            <div>
+              <h3>Reconocimiento</h3>
+              <p>Recopilar informacion visible del objetivo.</p>
+            </div>
+            <div>
+              <h3>Fingerprinting</h3>
+              <p>Inferir tecnologias y versiones por sus pistas externas.</p>
+            </div>
+            <div>
+              <h3>Enumeracion</h3>
+              <p>Listar usuarios, plugins, temas o archivos detectables.</p>
+            </div>
+            <div>
+              <h3>Gestion de vulnerabilidades</h3>
+              <p>Identificar, priorizar, corregir y verificar riesgos.</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Flujo de WPScan</h2>
+          <svg class="diagram" viewBox="0 0 1100 360" role="img" aria-label="Flujo de analisis de WPScan">
+            <defs>
+              <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L9,3 z" fill="#27d3f5"></path>
+              </marker>
+            </defs>
+            <rect x="30" y="120" width="190" height="90" rx="8" class="box box-a"></rect>
+            <text x="125" y="155" text-anchor="middle" class="box-title">Objetivo</text>
+            <text x="125" y="185" text-anchor="middle" class="box-text">WordPress</text>
+
+            <line x1="225" y1="165" x2="330" y2="165" class="arrow"></line>
+
+            <rect x="335" y="70" width="200" height="190" rx="8" class="box box-b"></rect>
+            <text x="435" y="105" text-anchor="middle" class="box-title">WPScan</text>
+            <text x="435" y="140" text-anchor="middle" class="box-text">Peticiones HTTP</text>
+            <text x="435" y="170" text-anchor="middle" class="box-text">Fingerprinting</text>
+            <text x="435" y="200" text-anchor="middle" class="box-text">Enumeracion</text>
+            <text x="435" y="230" text-anchor="middle" class="box-text">Correlacion</text>
+
+            <line x1="540" y1="165" x2="650" y2="165" class="arrow"></line>
+
+            <rect x="655" y="80" width="205" height="170" rx="8" class="box box-c"></rect>
+            <text x="758" y="115" text-anchor="middle" class="box-title">Base de datos</text>
+            <text x="758" y="145" text-anchor="middle" class="box-text">Vulnerabilidades</text>
+            <text x="758" y="175" text-anchor="middle" class="box-text">Plugins</text>
+            <text x="758" y="205" text-anchor="middle" class="box-text">Temas</text>
+
+            <line x1="865" y1="165" x2="970" y2="165" class="arrow"></line>
+
+            <rect x="975" y="120" width="100" height="90" rx="8" class="box box-d"></rect>
+            <text x="1025" y="155" text-anchor="middle" class="box-title">Informe</text>
+            <text x="1025" y="185" text-anchor="middle" class="box-text">Riesgo</text>
+          </svg>
+        </section>
+
+        <section>
+          <h2>Laboratorio local</h2>
+          <p>El laboratorio evita analizar sistemas externos y permite repetir la practica de forma segura.</p>
+          <svg class="diagram" viewBox="0 0 1100 390" role="img" aria-label="Arquitectura del laboratorio local">
+            <defs>
+              <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L9,3 z" fill="#27d3f5"></path>
+              </marker>
+            </defs>
+            <rect x="40" y="60" width="260" height="250" rx="8" class="box box-a"></rect>
+            <text x="170" y="105" text-anchor="middle" class="box-title">Maquina anfitriona</text>
+            <text x="170" y="145" text-anchor="middle" class="box-text">Navegador</text>
+            <text x="170" y="180" text-anchor="middle" class="box-text">WPScan</text>
+            <text x="170" y="215" text-anchor="middle" class="box-text">Comandos</text>
+
+            <line x1="305" y1="180" x2="455" y2="180" class="arrow"></line>
+
+            <rect x="460" y="60" width="270" height="250" rx="8" class="box box-b"></rect>
+            <text x="595" y="105" text-anchor="middle" class="box-title">Docker</text>
+            <text x="595" y="145" text-anchor="middle" class="box-text">WordPress</text>
+            <text x="595" y="180" text-anchor="middle" class="box-text">http://localhost:8080</text>
+            <text x="595" y="215" text-anchor="middle" class="box-text">Sitio objetivo</text>
+
+            <line x1="735" y1="180" x2="875" y2="180" class="arrow"></line>
+
+            <rect x="880" y="60" width="180" height="250" rx="8" class="box box-c"></rect>
+            <text x="970" y="105" text-anchor="middle" class="box-title">MySQL</text>
+            <text x="970" y="145" text-anchor="middle" class="box-text">Base de datos</text>
+            <text x="970" y="180" text-anchor="middle" class="box-text">Usuarios</text>
+            <text x="970" y="215" text-anchor="middle" class="box-text">Contenido</text>
+          </svg>
+        </section>
+
+        <section>
+          <h2>Dos escenarios</h2>
+          <div class="scenario-grid">
+            <div class="scenario">
+              <p class="scenario-label">Escenario 1</p>
+              <h3>WordPress actualizado</h3>
+              <p><code>http://localhost:8080</code></p>
+              <ul>
+                <li>Reconocimiento basico</li>
+                <li>Enumeracion de usuarios</li>
+                <li>Plugins y temas detectables</li>
+                <li>Pocas vulnerabilidades esperadas</li>
+              </ul>
+            </div>
+            <div class="scenario hot">
+              <p class="scenario-label">Escenario 2</p>
+              <h3>WordPress vulnerable</h3>
+              <p><code>http://localhost:8081</code></p>
+              <ul>
+                <li>WordPress 5.8</li>
+                <li>Contact Form 7 5.3.1</li>
+                <li>WooCommerce 3.4.5</li>
+                <li>Twenty Nineteen 1.5</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Estructura creada</h2>
+          <pre><code class="language-text">laboratorio-wpscan/
+  docker-compose.yml
+  docker-compose.vulnerable.yml
+  README.md
+  comandos-wpscan.md
+  guion-demo-clase.md
+  scripts/preparar-wordpress-vulnerable.sh
+  wordlists/passwords-lab.txt
+  evidencias/plantilla-hallazgos.md</code></pre>
+          <p class="note">La carpeta deja listo el entorno, los comandos y la plantilla para documentar evidencias.</p>
+        </section>
+
+        <section>
+          <h2>Levantar escenarios</h2>
+          <p>Escenario actualizado:</p>
+          <pre><code class="language-bash">cd laboratorio-wpscan
+docker compose up -d</code></pre>
+          <p>Escenario vulnerable:</p>
+          <pre><code class="language-bash">chmod +x scripts/preparar-wordpress-vulnerable.sh
+./scripts/preparar-wordpress-vulnerable.sh</code></pre>
+          <p class="note">El actualizado queda en `8080`; el vulnerable queda en `8081`.</p>
+        </section>
+
+        <section>
+          <h2>Comandos de practica</h2>
+          <pre><code class="language-bash">wpscan --url http://localhost:8080
+wpscan --url http://localhost:8080 --enumerate u
+wpscan --url http://localhost:8080 --enumerate ap,at
+wpscan --url http://localhost:8081 --enumerate u,ap,at
+wpscan --url http://localhost:8081 --enumerate vp,vt --api-token TU_TOKEN</code></pre>
+          <p class="note">La comparacion permite ver hallazgos normales frente a componentes desactualizados.</p>
+        </section>
+
+        <section>
+          <h2>API token</h2>
+          <p>Para consultar vulnerabilidades conocidas se usa un token de WPScan.</p>
+          <pre><code class="language-bash">wpscan --url http://localhost:8080 --api-token TU_TOKEN</code></pre>
+          <div class="warning small">
+            El token no debe compartirse, mostrarse en capturas ni subirse a repositorios.
+          </div>
+        </section>
+
+        <section>
+          <h2>Que debe arrojar</h2>
+          <div class="two-col">
+            <div class="panel">
+              <h3>Actualizado</h3>
+              <ul>
+                <li>WordPress detectado</li>
+                <li>Tema activo</li>
+                <li>Usuarios si son enumerables</li>
+                <li>Pocas alertas criticas</li>
+              </ul>
+            </div>
+            <div class="panel">
+              <h3>Vulnerable</h3>
+              <ul>
+                <li>Componentes antiguos</li>
+                <li>Plugins detectables</li>
+                <li>Vulnerabilidades con API token</li>
+                <li>Mayor prioridad de correccion</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Prueba controlada</h2>
+          <pre><code class="language-bash">wpscan --url http://localhost:8080 \
+  --usernames admin \
+  --passwords wordlists/passwords-lab.txt</code></pre>
+          <p>Sirve para demostrar el riesgo de credenciales debiles en un entorno propio.</p>
+          <p class="note">En sistemas reales requiere autorizacion explicita y limites claros.</p>
+        </section>
+
+        <section>
+          <h2>De salida tecnica a informe</h2>
+          <div class="report-flow">
+            <div>Hallazgo</div>
+            <div>Evidencia</div>
+            <div>Riesgo</div>
+            <div>Impacto</div>
+            <div>Recomendacion</div>
+            <div>Prioridad</div>
+          </div>
+          <p>La herramienta entrega datos; el analista convierte esos datos en decisiones de seguridad.</p>
+        </section>
+
+        <section>
+          <h2>Ejemplo de interpretacion</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Elemento</th>
+                <th>Ejemplo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hallazgo</td>
+                <td>Usuario administrador enumerable</td>
+              </tr>
+              <tr>
+                <td>Riesgo</td>
+                <td>Facilita ataques de contrasena o phishing</td>
+              </tr>
+              <tr>
+                <td>Mitigacion</td>
+                <td>MFA, contrasenas fuertes, limitar intentos y monitorear logs</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>Defensa en profundidad</h2>
+          <div class="defense-ring">
+            <div class="ring outer">Monitoreo</div>
+            <div class="ring mid">Actualizaciones</div>
+            <div class="ring inner">MFA</div>
+            <div class="ring core">WordPress</div>
+          </div>
+          <ul>
+            <li>Actualizar nucleo, plugins y temas.</li>
+            <li>Eliminar componentes no usados.</li>
+            <li>Proteger backups, logs y configuraciones.</li>
+            <li>Revisar periodicamente con herramientas autorizadas.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Limitaciones</h2>
+          <ul>
+            <li>Puede generar falsos positivos o falsos negativos.</li>
+            <li>No reemplaza revision manual ni revision de codigo.</li>
+            <li>No analiza toda la logica de negocio.</li>
+            <li>Depende de lo visible desde el exterior.</li>
+            <li>Para vulnerabilidades conocidas requiere API token.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Cierre</h2>
+          <p class="lead">WPScan ayuda a entender como se ve un WordPress desde fuera.</p>
+          <p>En el laboratorio se conectan tres ideas: reconocimiento, gestion de vulnerabilidades y mitigacion defensiva.</p>
+          <div class="closing">Escanear no es el final: el valor esta en interpretar y corregir.</div>
+        </section>
+
+        <section>
+          <h2>Fuentes</h2>
+          <ul class="sources">
+            <li>WPScan: https://wpscan.org/</li>
+            <li>WPScan CLI Scanner: https://wpscan.com/wordpress-cli-scanner</li>
+            <li>WPScan API: https://wpscan.com/docs/api/v3/</li>
+            <li>Repositorio oficial: https://github.com/wpscanteam/wpscan</li>
+            <li>WPScan DB: https://wpscan.com/</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide',
+        backgroundTransition: 'fade',
+        plugins: [RevealHighlight, RevealNotes]
+      });
+    </script>
+  </body>
+</html>
